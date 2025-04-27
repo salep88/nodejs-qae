@@ -46,15 +46,8 @@ jobs:
         run: mkdir -p ~/.ssh
       - name: Start SSH agent
         run: eval $(ssh-agent -s)
-      - name: Debug Docker Environment
-        run: |
-          if [[ -f /.dockerenv ]]; then
-            echo "Running inside Docker."
-          else
-            echo "Not running inside Docker."
-          fi
-      - name: Check if the Docker Env file exist
-        run: '[[ -f /.dockerenv ]] && echo -e "Host github.com\n\tStrictHostKeyChecking no" > ~/.ssh/config'
+      - name: Verify SSH Agent
+        run: ssh-add -l || echo "No SSH keys loaded or SSH agent not running."
       - name: Add SSH key
         run: echo "$PRIVATEDSA" | ssh-add -
       - name: Change read/write folder permissions
