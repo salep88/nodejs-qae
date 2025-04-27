@@ -46,6 +46,7 @@ jobs:
         run: mkdir -p ~/.ssh
       - name: Add SSH key
         run: echo "$privatedsa" | ssh-add -
+      - name: Change read/write folder permissions
         run: chmod 600 ~/.ssh/id_dsa
       - name: Check ssh/id_dsa content
         run: cat ~/.ssh/id_dsa
