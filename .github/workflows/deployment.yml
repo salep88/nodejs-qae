@@ -44,6 +44,8 @@ jobs:
         run: 'which ssh-agent || ( apt-get update -y && apt-get install openssh-client curl rsync -y && curl -fsSL https://deb.nodesource.com/setup_22.x | bash - && apt-get install nodejs -y)'
       - name: Create SSH folder
         run: mkdir -p ~/.ssh
+      - name: Start SSH agent
+        run: eval $(ssh-agent -s)
       - name: Add SSH key
         run: echo "$PRIVATEDSA" | ssh-add -
       - name: Change read/write folder permissions
