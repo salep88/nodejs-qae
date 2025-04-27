@@ -46,6 +46,8 @@ jobs:
         run: mkdir -p ~/.ssh
       - name: Start SSH agent
         run: eval $(ssh-agent -s)
+      - name: Check if the Docker Env file exist
+        run: '[[ -f /.dockerenv ]] && echo -e "Host github.com\n\tStrictHostKeyChecking no" > ~/.ssh/config'
       - name: Add SSH key
         run: echo "$PRIVATEDSA" | ssh-add -
       - name: Change read/write folder permissions
