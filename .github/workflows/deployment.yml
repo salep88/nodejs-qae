@@ -9,7 +9,7 @@ jobs:
       - name: Install NodeJS
         uses: actions/setup-node@v4
         with:
-          node-version: 18
+          node-version: 22
       - name: Check NodeJS version
         run: node -v
       - name: Check NPM version
@@ -20,13 +20,14 @@ jobs:
         run: npm run build
   test:
     runs-on: ubuntu-latest
+    needs: build
     steps:
       - name: Get code
         uses: actions/checkout@v4
       - name: Install NodeJS
         uses: actions/setup-node@v4
         with:
-          node-version: 18
+          node-version: 22
       - name: Check NodeJS version
         run: node -v
       - name: Check NPM version
@@ -35,3 +36,22 @@ jobs:
         run: npm ci
       - name: Run tests
         run: npm test
+  deploy:
+    runs-on: ubuntu-latest
+    needs: [build, test]
+    steps:
+      - name: Check if the SSH agent service is available and running
+        run: 'which ssh-agent || ( apt-get update -y && apt-get install openssh-client curl rsync -y && curl -fsSL https://deb.nodesource.com/setup_22.x | bash - && apt-get install nodejs -y)'
+      - name: Create SSH folder
+        run: mkdir -p ~/.ssh
+      - name: Add SSH key
+        run: echo "$privatedsa" | ssh-add -
+        run: chmod 600 ~/.ssh/id_dsa
+      - name: Check ssh/id_dsa content
+        run: cat ~/.ssh/id_dsa
+      - name: Check SSH folder content
+        run: ls -la ~/.ssh
+      - name: Check NodeJS version
+        run: node -v
+      - name: rsync connection
+        run: rsync -e "ssh -o StrictHostKeyChecking=no" -arvc * $userdev@$serverdev:/home/unang/nodejs-qae-github/
