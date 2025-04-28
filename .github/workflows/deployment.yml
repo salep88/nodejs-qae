@@ -46,8 +46,6 @@ jobs:
         uses: webfactory/ssh-agent@v0.9.0
         with:
           ssh-private-key: ${{ secrets.PRIVATEDSA }}
-      - name: Check ssh/id_dsa content
-        run: cat ~/.ssh/id_dsa
       - name: Check SSH folder content
         run: ls -la ~/.ssh
       - name: Check NodeJS version
