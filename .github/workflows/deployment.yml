@@ -9,7 +9,7 @@ jobs:
       - name: Install NodeJS
         uses: actions/setup-node@v4
         with:
-          node-version: 22
+          node-version: 18
       - name: Check NodeJS version
         run: node -v
       - name: Check NPM version
@@ -27,7 +27,7 @@ jobs:
       - name: Install NodeJS
         uses: actions/setup-node@v4
         with:
-          node-version: 22
+          node-version: 18
       - name: Check NodeJS version
         run: node -v
       - name: Check NPM version
@@ -41,7 +41,7 @@ jobs:
     needs: [build, test]
     steps:
       - name: Check if the SSH agent service is available and running
-        run: 'which ssh-agent || ( apt-get update -y && apt-get install openssh-client curl rsync -y && curl -fsSL https://deb.nodesource.com/setup_22.x | bash - && apt-get install nodejs -y)'
+        run: 'which ssh-agent || ( apt-get update -y && apt-get install openssh-client curl rsync -y && curl -fsSL https://deb.nodesource.com/setup_18.x | bash - && apt-get install nodejs -y)'
       - name: Create SSH folder
         run: mkdir -p ~/.ssh
       - name: Start SSH agent
